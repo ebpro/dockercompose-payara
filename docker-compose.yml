@@ -19,5 +19,6 @@ services:
         environment:
             POSTGRES_PASSWORD: glassfishdbpassword
             POSTGRES_USER: glassfish
+            PGDATA: /var/lib/postgresql/data/pgdata
         volumes:
-            - .:/data/postgres
+            - ./data/pgdata:/var/lib/postgresql/data/pgdata
