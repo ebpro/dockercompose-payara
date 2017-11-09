@@ -1,4 +1,4 @@
-FROM payara/server-full:163
+FROM payara/server-full:173
 
 RUN wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar \
          -O /opt/payara41/glassfish/domains/domain1/lib/postgresql.jar && \
