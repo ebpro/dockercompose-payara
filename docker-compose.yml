@@ -2,6 +2,8 @@ version: '2'
 services:
     payara-full:
         build: mypayara-full
+        environment:
+           - ADMIN_PASSWORD=admin
         ports:
             - "8080:8080"
             - "4848:4848"
@@ -10,7 +12,12 @@ services:
             - start-domain
             - -v
         volumes:
-            - ./data/payara:/opt/payara41/glassfish/domains/domain1/autodeploy
+          # application to deploy at startup
+            - "./data/payara/deployments:/opt/payara41/deployments"
+          # autodeploy (discouraged : no parameters, needs write access)
+            - "./data/payara/autodeploy:/opt/payara41/glassfish/domains/domain1/autodeploy"
+            
+            - "./payara-init.sh:/usr/local/bin/payara-init.sh"
         depends_on:
             - db
 
