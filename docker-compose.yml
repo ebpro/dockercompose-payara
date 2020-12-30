@@ -22,10 +22,11 @@ services:
             - db
 
     db:
-        image: postgres
+        image: oscarfonts/h2:1.4.199
+        ports:
+            - "1521:1521"
+            - "8081:81"
         environment:
-            POSTGRES_PASSWORD: glassfishdbpassword
-            POSTGRES_USER: glassfish
-            PGDATA: /var/lib/postgresql/data/pgdata
+            H2_OPTIONS: '-ifNotExists'
         volumes:
-            - ./data/pgdata:/var/lib/postgresql/data/pgdata
+            - ./data/h2data:/opt/h2-data

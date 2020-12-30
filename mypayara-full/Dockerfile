@@ -1,22 +1,22 @@
 FROM payara/server-full:173
 #Allows autodeploy
 RUN chown payara:payara /opt/payara41/glassfish/domains/domain1/autodeploy
-#installs postgresql jdbc driver
+#installs h2 jdbc driver
 #and adds a jdbc connection pool and ressource
-RUN wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar \
-         -O /opt/payara41/glassfish/domains/domain1/lib/postgresql.jar && \
-    /opt/payara41/bin/asadmin start-domain && \
+RUN wget https://repo1.maven.org/maven2/com/h2database/h2/1.4.199/h2-1.4.199.jar \
+         -O /opt/payara41/glassfish/domains/domain1/lib/ext/h2.jar 
+RUN /opt/payara41/bin/asadmin start-domain && \
     /opt/payara41/bin/asadmin --user admin \
     			      --passwordfile=/opt/pwdfile \
     			      set-hazelcast-configuration --enabled=true --dynamic=true && \
     /opt/payara41/bin/asadmin --user admin \
                               --passwordfile=/opt/pwdfile \
 			       create-jdbc-connection-pool \
-			        --datasourceclassname org.postgresql.ds.PGConnectionPoolDataSource  \
+			        --datasourceclassname org.h2.jdbcx.JdbcDataSource \
 			        --restype javax.sql.ConnectionPoolDataSource \
-				--property portNumber=5432:password=glassfishdbpassword:user=glassfish:serverName=db:databaseName=glassfish \
-				postgres-pool && \
+				--property password=password:user=user:url="jdbc\\:h2\\:tcp\\://db\\:1521/payara" \
+				H2-pool && \
     /opt/payara41/bin/asadmin --user admin \                                                                                           
                               --passwordfile=/opt/pwdfile \
-			       create-jdbc-resource --connectionpoolid postgres-pool jdbc/postgres-pool && \
+			       create-jdbc-resource --connectionpoolid H2-pool jdbc/h2-pool && \
     /opt/payara41/bin/asadmin stop-domain
