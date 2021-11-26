@@ -1,0 +1,7 @@
+add-library  /tmp/h2.jar
+
+set-hazelcast-configuration --enabled=true --dynamic=true
+
+create-jdbc-connection-pool --datasourceclassname org.h2.jdbcx.JdbcDataSource --restype javax.sql.ConnectionPoolDataSource --property password=password:user=user:url="jdbc\\:h2\\:tcp\\://db\\:1521/payara" H2-pool
+
+create-jdbc-resource --connectionpoolid H2-pool jdbc/h2-pool 

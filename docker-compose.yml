@@ -7,25 +7,21 @@ services:
         ports:
             - "8080:8080"
             - "4848:4848"
-        entrypoint:
-            - /opt/payara41/bin/asadmin
-            - start-domain
-            - -v
         volumes:
           # application to deploy at startup
-            - "./data/payara/deployments:/opt/payara41/deployments"
-          # autodeploy (discouraged : no parameters, needs write access)
-            - "./data/payara/autodeploy:/opt/payara41/glassfish/domains/domain1/autodeploy"
+            - "./data/payara/deployments:/opt/payara/deployments"
+         ### BEST TO BUILD A CUSTOM IMAGE WITH 
+         # COPY myapplication.war $DEPLOY_DIR
             
-            - "./payara-init.sh:/usr/local/bin/payara-init.sh"
         depends_on:
             - db
 
     db:
-        image: postgres
+        image: oscarfonts/h2:1.4.199
+        ports:
+            - "1521:1521"
+            - "8081:81"
         environment:
-            POSTGRES_PASSWORD: glassfishdbpassword
-            POSTGRES_USER: glassfish
-            PGDATA: /var/lib/postgresql/data/pgdata
+            H2_OPTIONS: '-ifNotExists'
         volumes:
-            - ./data/pgdata:/var/lib/postgresql/data/pgdata
+            - ./data/h2data:/opt/h2-data
