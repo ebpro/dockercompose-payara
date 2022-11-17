@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
     payara-full:
         build: mypayara-full
@@ -7,21 +7,17 @@ services:
         ports:
             - "8080:8080"
             - "4848:4848"
-        volumes:
-          # application to deploy at startup
-            - "./data/payara/deployments:/opt/payara/deployments"
-         ### BEST TO BUILD A CUSTOM IMAGE WITH 
-         # COPY myapplication.war $DEPLOY_DIR
-            
         depends_on:
             - db
 
     db:
-        image: oscarfonts/h2:1.4.199
+        image: oscarfonts/h2:2.1.210
         ports:
             - "1521:1521"
             - "8081:81"
         environment:
             H2_OPTIONS: '-ifNotExists'
         volumes:
-            - ./data/h2data:/opt/h2-data
+            - h2-data:/opt/h2-data
+volumes:
+  h2-data:              
