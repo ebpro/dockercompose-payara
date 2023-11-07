@@ -1,16 +1,9 @@
 version: '3.7'
 
-x-common-variables: &common-variables
-    POSTGRES_USER: dba
-    POSTGRES_PASSWORD: secret
-    POSTGRES_DB: payaradb
-
 services:
 
     payara-full:
         build: mypayara-full
-        environment:
-           <<: *common-variables
         ports:
             - "8080:8080"
             - "4848:4848"
@@ -19,7 +12,9 @@ services:
     db:
         image: postgres:16
         environment:
-            <<: *common-variables
+            POSTGRES_USER: dba
+            POSTGRES_PASSWORD: secret
+            POSTGRES_DB: payaradb
         ports:
             - "5432:5432"
         volumes:
