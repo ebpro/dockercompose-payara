@@ -1,7 +1,5 @@
-add-library  /tmp/h2.jar
+add-library  /tmp/pg.jar
 
-set-hazelcast-configuration --enabled=true --dynamic=true
+create-jdbc-connection-pool --datasourceclassname org.postgresql.ds.PGSimpleDataSource --restype javax.sql.DataSource --property password=secret:user=dba:url="jdbc:h2:tcp://db:5432/payradb" pg-pool
 
-create-jdbc-connection-pool --datasourceclassname org.h2.jdbcx.JdbcDataSource --restype javax.sql.ConnectionPoolDataSource --property password=password:user=user:url="jdbc:h2:tcp://db:1521/payara" H2-pool
-
-create-jdbc-resource --connectionpoolid H2-pool jdbc/h2-pool 
+create-jdbc-resource --connectionpoolid H2-pool jdbc/pg-pool

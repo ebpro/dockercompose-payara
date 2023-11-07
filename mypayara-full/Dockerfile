@@ -1,12 +1,12 @@
-FROM payara/server-full:5.2022.4-jdk17
+FROM payara/server-full:6.2023.10-jdk17
 
 # Download the JDBC driver
 USER root
 RUN apt-get update && \
     apt-get install -y wget unzip && \
     rm -rf /var/lib/apt/lists/* && \
-    wget https://repo1.maven.org/maven2/com/h2database/h2/2.1.214/h2-2.1.214-javadoc.jar \
-         -O /tmp/h2.jar 
+    wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar \
+         -O /tmp/pg.jar
 
 USER payara
 

@@ -1,23 +1,28 @@
-version: '3'
+version: '3.7'
+
+x-common-variables: &common-variables
+    POSTGRES_USER: dba
+    POSTGRES_PASSWORD: secret
+    POSTGRES_DB: payaradb
+
 services:
+
     payara-full:
         build: mypayara-full
         environment:
-           - ADMIN_PASSWORD=admin
+           <<: *common-variables
         ports:
             - "8080:8080"
             - "4848:4848"
         depends_on:
             - db
-
     db:
-        image: oscarfonts/h2:2.1.210
-        ports:
-            - "1521:1521"
-            - "8081:81"
+        image: postgres:16
         environment:
-            H2_OPTIONS: '-ifNotExists'
+            <<: *common-variables
+        ports:
+            - "5432:5432"
         volumes:
-            - h2-data:/opt/h2-data
+            - pg-data:/var/lib/postgresql/data
 volumes:
-  h2-data:              
+  pg-data:
